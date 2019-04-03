@@ -33,6 +33,10 @@
     "name": "Tam Vo",
     "email": "Tam.VoMinh212@gmail.com"
   },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/TamVoMinh/joy-query-box.git"
+  },
   "license": "MIT",
   "dependencies": {
     "pegjs": "^0.10.0",
