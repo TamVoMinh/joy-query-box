@@ -1,5 +1,5 @@
 import React from 'react';
-import { func , string} from 'prop-types';
+import { func , string, bool} from 'prop-types';
 import * as PEG from 'pegjs';
 import grammar from './gramma.pegjs';
 const pegparser = PEG.generate(grammar);
@@ -8,7 +8,8 @@ class QueryBox extends React.PureComponent {
         label: string,
         placeholder: string,
         onSearch: func.isRequired,
-        queryText: string
+        queryText: string,
+        autoFocus: bool
     }
     constructor(props) {
         super(props);
@@ -26,6 +27,7 @@ class QueryBox extends React.PureComponent {
                     <span className="input-group-text">{this.props.label || 'Search'}</span>
                 </div>
                 <input 
+                    autoFocus={this.props.autoFocus}
                     id="joy-query-box-input" 
                     type="text" 
                     className={`${err ? 'form-control is-invalid' : 'form-control'}`}

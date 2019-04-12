@@ -1,15 +1,15 @@
 {
   "name": "joy-query-box",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "",
-  "main": "index.js",
+  "main": "lib/index.js",
   "directories": {
     "example": "example",
     "src": "src"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "webpack-dev-server --config ./webpack.config.js --mode development",
+    "start": "node server",
     "watch": "webpack --watch",
     "build": "webpack --mode development",
     "build:component": "webpack --config webpack.component.config.js --progress -p"
@@ -23,8 +23,12 @@
     "@babel/preset-env": "^7.0.0",
     "@babel/preset-react": "^7.0.0",
     "babel-loader": "^8.0.0",
+    "css-loader": "^2.1.1",
+    "node-sass": "^4.11.0",
     "raw-loader": "^1.0.0",
     "react-hot-loader": "^4.8.0",
+    "sass-loader": "^7.1.0",
+    "style-loader": "^0.23.1",
     "webpack": "^4.29.6",
     "webpack-cli": "^3.2.3",
     "webpack-dev-server": "^3.2.1"

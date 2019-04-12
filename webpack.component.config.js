@@ -38,7 +38,7 @@ var config =  {
 
   
   output: {
-    path: path.join(__dirname, ''),
+    path: path.join(__dirname, './lib'),
     filename: 'index.js',
     library: 'joy-query-box',
     libraryTarget: 'commonjs2'

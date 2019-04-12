@@ -1,6 +1,11 @@
 const webpack = require('webpack');
 module.exports = {
-  entry: './src/index.jsx',
+  mode:'development',
+  entry: [
+    './src/example/index.jsx',
+    'webpack-dev-server/client?http://localhost:3000',
+    'webpack/hot/only-dev-server'
+  ],
   module: {
     rules: [
       {
@@ -12,6 +17,14 @@ module.exports = {
         test: /\.pegjs$/i,
         use: 'raw-loader',
       },
+      {
+        test: /\.scss$/,
+        use: [
+            "style-loader", 
+            "css-loader", 
+            "sass-loader"
+        ]
+      }
     ]
   },
   resolve: {
@@ -19,7 +32,7 @@ module.exports = {
   },
   output: {
     path: __dirname + '/dist',
-    publicPath: '/',
+    publicPath: '/static',
     filename: 'bundle.js'
   },
   plugins: [
