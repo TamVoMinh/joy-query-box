@@ -2,67 +2,70 @@ import React from 'react';
 import { func , string, bool} from 'prop-types';
 import * as PEG from 'pegjs';
 import grammar from './gramma.pegjs';
+import 'brace';
+import 'brace/theme/github';
+import ace from 'ace-builds';
+import SimpleQueryMode from './simpleQuery.mode';
+
 const pegparser = PEG.generate(grammar);
 class QueryBox extends React.PureComponent {
     static propTypes = {
-        label: string,
+        className: string,
         placeholder: string,
         onSearch: func.isRequired,
         queryText: string,
         autoFocus: bool
     }
-    constructor(props) {
-        super(props);
-        this.state = {
-            result:'',
-            err: null
-        }
-    }
 
     render(){
-        const {err} = this.state;
+        const inputClassName = this.props.className || 'border rounded p-2';
         return (
-            <div className="input-group mb-3">
-                <div className="input-group-prepend">
-                    <span className="input-group-text">{this.props.label || 'Search'}</span>
-                </div>
-                <input 
-                    autoFocus={this.props.autoFocus}
-                    id="joy-query-box-input" 
-                    type="text" 
-                    className={`${err ? 'form-control is-invalid' : 'form-control'}`}
-                    aria-label="simple query" 
-                    onKeyPress={this.onQueryTextPress} 
-                    placeholder={this.props.placeholder || ''} 
-                    defaultValue={this.props.queryText || ''} />
-                 {err && <div id={`form-feedback-joy-query-box-input`} className="invalid-feedback">
-                    {err.message}
-                </div>}
+            <div className={inputClassName}>
+                <div ref="aceEditor" id="query-text-box"></div>
             </div>
-        )
+        );
     }
-    onQueryTextPress = e => {
-        if(e.key === 'Enter'){
-            let err = null;
-            let parsed = null;
-            let freetext = '';
-            try {
-                freetext = e.target.value.trim();
-                parsed = freetext ? pegparser.parse(e.target.value.trim()): {};
-                this.setState({
-                    result: JSON.stringify(parsed, null, 2),
-                    err: null
-                });
-            }
-            catch(e) {
-                err = e;
-                this.setState({
-                    result: '',
-                    err
-                })
-            } finally{
-                this.props.onSearch(err, parsed, freetext);
-            }
+
+    componentDidMount() {
+        const hanleQueryChange = this.hanleQueryChange;
+        this.__editor =  ace.edit(this.refs.aceEditor);
+        this.editor().setOptions({
+            maxLines: 1,
+            autoScrollEditorIntoView: true,
+            highlightActiveLine: false,
+            printMargin: false,
+            showGutter: false,
+            theme: "ace/theme/github",
+            fontSize: 13,
+        });
+        this.editor().commands.addCommand({
+            name: 'submit-query',
+            bindKey: {
+                sender:     "editor|cli",
+                mac:        "Enter",
+                windows:    "Enter"
+            },
+            exec: editor => hanleQueryChange(editor.getSession().getValue())
+        });
+        this.editor().getSession().setMode(new SimpleQueryMode());
+        this.props.queryText && this.editor().getSession().setValue(this.props.queryText);
+        
+    }
+
+    editor = () => this.__editor;
+
+    hanleQueryChange = val => {
+        let err = null;
+        let parsed = null;
+        let freetext = '';
+        try {
+            freetext = val.trim();
+            parsed = freetext ? pegparser.parse(freetext): {};
+        }
+        catch(e) {
+            err = e;
+        } finally{
+           this.props.onSearch(err, parsed, freetext);
         }
     }
 }

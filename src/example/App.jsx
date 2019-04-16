@@ -1,23 +1,15 @@
-import React, { Fragment } from 'react';
+import React from 'react';
 import { hot } from 'react-hot-loader';
 import QueryBox from '../index';
-const ace = require('ace-builds');
-import brace from 'brace';
-import AceEditor from 'react-ace';
-import 'brace/theme/github';
-import 'brace/mode/mysql';
-import 'brace/mode/json';
 import './App.scss';
-import SimpleQueryMode from '../simpleQuery.mode';
 
 class App extends React.Component {
     state = {
-        result: ``
+        result: ``,
+        queryText: "(gender = 'women' & age >= 18) | (gender = 'men' & age >= 22)"
+
     }
-    componentDidMount() {
-        const simpleQueryMode = new SimpleQueryMode();
-        this.refs.aceEditor.editor.getSession().setMode(simpleQueryMode);
-    }
+   
     render() {
         return (
             <div className="col col-12 col-lg-12 d-flex flex-column h-100">
@@ -67,26 +59,21 @@ class App extends React.Component {
                     </div>
                 </div>
                 <div className="panel flex-fill my-2">
-                    <div id="ace-editor"></div>
-                    <AceEditor
-                        ref="aceEditor"
-                        mode="text"
-                        theme="github"
-                        onChange={this.handleOnEditorChange}
-                        name="ace-editor"
-                        editorProps={{ $blockScrolling: true }}
-                        showGutter={true}
-                        maxLines={4}
-                        minLines={2}
-                        width="100%"
-                    />
-                    <QueryBox
-                        autoFocus
-                        label="Simple query"
-                        placeholder="type condition here"
-                        onSearch={this.handleOnSeach}
-                        queryText={"(gender = 'women' & age >= 18) | (gender = 'men' & age >= 22)"}
-                    />
+                    <div className="panel my-2">
+                        <div className="input-group">
+                            <div className="input-group-prepend">
+                            <div className="input-group-text">Simple query</div>
+                            </div>
+                            <QueryBox
+                                className="form-control pt-2"
+                                autoFocus
+                                placeholder="type condition here"
+                                onSearch={this.handleOnSeach}
+                                queryText={this.state.queryText}
+                            />
+                        </div>
+                        
+                    </div>
                     <div className="card">
                         <div className="card-body">
                             <pre className="text-monospace">
@@ -103,9 +90,6 @@ class App extends React.Component {
         this.setState({
             result: JSON.stringify(err || parsed || undefined, null, 2)
         });
-    }
-    handleOnEditorChange = (text, eve) => {
-        console.log(text, eve);
     }
 }
 

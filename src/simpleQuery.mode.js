@@ -56,7 +56,7 @@ export class SimpleQueryRules extends ace.acequire("ace/mode/text_highlight_rule
 	}
 }
 
-export default class CustomSqlMode extends window.ace.acequire('ace/mode/text').Mode {
+export default class SimpleQueryMode extends ace.acequire('ace/mode/text').Mode {
 	constructor() {
 		super();
 		this.HighlightRules = SimpleQueryRules;
