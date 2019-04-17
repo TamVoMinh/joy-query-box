@@ -3,7 +3,7 @@ module.exports = {
   mode:'development',
   entry: [
     './src/example/index.jsx',
-    'webpack-dev-server/client?http://localhost:3000',
+    `webpack-dev-server/client?http://${require('os').hostname().toLowerCase()}:3000'`,
     'webpack/hot/only-dev-server'
   ],
   module: {
@@ -39,6 +39,7 @@ module.exports = {
     new webpack.HotModuleReplacementPlugin()
   ],
   devServer: {
+    host: '0.0.0.0',
     contentBase: './dist',
     hot:true
   }

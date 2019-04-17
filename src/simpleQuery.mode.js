@@ -39,7 +39,7 @@ export class SimpleQueryRules extends window.ace.acequire("ace/mode/text_highlig
                 regex : "[a-zA-Z_$][a-zA-Z0-9_$]*\\b"
             }, {
                 token : "keyword.operator",
-                regex : "\\&|\\|>|>=|<|<=|=|%=|@=|\\$="
+                regex : "\\&|>|>=|<|<=|="
             }, {
                 token : "paren.lparen",
                 regex : "[\\(]"

@@ -3,13 +3,28 @@ import { hot } from 'react-hot-loader';
 import QueryBox from '../index';
 import './App.scss';
 
+const words = [
+    {
+        word: 'company',
+        desc: 'Company Name'
+    },
+    {
+        word: 'email',
+        desc: 'Customer Email'
+    },
+    {
+        word: 'fortnoxId',
+        desc: 'Customer Fortnox Account Id'
+    }
+];
+
 class App extends React.Component {
     state = {
         result: ``,
         queryText: "(gender = 'women' & age >= 18 & title startwith 'ms.') | (gender = 'men' & age >= 22 & title contains 'mr')"
 
     }
-   
+
     render() {
         return (
             <div className="col col-12 col-lg-12 d-flex flex-column h-100">
@@ -29,49 +44,59 @@ class App extends React.Component {
                         <div className="col-sm">
                             <code>></code> Greater than
                         </div>
+
                         <div className="col-sm">
-                            <code>>=</code> Greater than or equal
-                        </div>
-                        <div className="col-sm">
-                         <code> &lt; </code> Less than
-                        </div>
-                        <div className="col-sm">
-                            <code> &lt;= </code> Less than or equal
-                        </div>
-                        
-                    </div>
-                    <div className="row">
-                        <div className="col-sm">
-                            <code> %= </code> Like
-                        </div>
-                        <div className="col-sm">
-                            <code> @= </code> Contains
-                        </div>
-                        <div className="col-sm">
-                            <code> $= </code> StartWith
+                            <code> &lt; </code> Less than
                         </div>
                         <div className="col-sm">
                             <code> &amp; </code> And
                         </div>
+
+                    </div>
+                    <div className="row">
+                        <div className="col-sm">
+                        </div>
+                        <div className="col-sm">
+                            <code>>=</code> Greater than or equal
+                        </div>
+                        <div className="col-sm">
+                            <code> &lt;= </code> Less than or equal
+                        </div>
+
                         <div className="col-sm">
                             <code> | </code> Or
                         </div>
                     </div>
+                    <div className="row">
+                        <div className="col-sm">
+                            <code>like</code> Like
+                        </div>
+                        <div className="col-sm">
+                            <code>startwith</code> Start With
+                        </div>
+                        <div className="col-sm">
+                            <code>contains</code> Contains
+                        </div>
+                        <div className="col-sm">
+                        </div>
+                    </div>
+
                 </div>
                 <div className="panel flex-fill my-2">
                     <div className="panel my-2">
                         <div className="input-group">
                             <div className="input-group-prepend">
-                            <div className="input-group-text">Simple query</div>
+                                <div className="input-group-text">Simple query</div>
                             </div>
                             <QueryBox
                                 autoFocus
+                                words={words}
                                 placeholder="type condition here"
                                 onSearch={this.handleOnSeach}
                                 queryText={this.state.queryText}
                             />
                         </div>
-                        
+
                     </div>
                     <div className="card">
                         <div className="card-body">

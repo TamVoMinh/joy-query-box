@@ -43,19 +43,16 @@ OrOp			= "|" {return "$or" }
 LP				= "("
 RP				= ")"
     
-CompOperators 	= Equal / GreaterThanOrEqual / GreaterThan / LessThanOrEqual / LessThan / StartWith / Contains / Like / KeyContains / KeyLike / KeyStartWith
+CompOperators 	= Equal / GreaterThanOrEqual / GreaterThan / LessThanOrEqual / LessThan / Contains / Like / StartWith
 Equal				= "="	        {return "$eq"}
 Diff				= "#"	        {return "$dif"}
 GreaterThan 		= ">"	        {return "$gt"} 
 GreaterThanOrEqual 	= ">="	        {return "$gte"} 
 LessThan 			= "<"	        {return "$lt"} 
 LessThanOrEqual 	= "<="	        {return "$lte"} 
-StartWith 			= "$="	        {return "$startWith"} 
-KeyStartWith 		= "startwith"	{return "$startWith"} 
-Contains 			= "@="	        {return "$contains"} 
-KeyContains         = "contains"	{return "$contains"} 
-Like 			    = "%="	        {return "$like"} 
-KeyLike 			= "like"        {return "$like"} 
+StartWith 		= "startwith"	{return "$startWith"} 
+Contains         = "contains"	{return "$contains"} 
+Like 			= "like"        {return "$like"} 
 
 Expr = Float / Integer / Identifier / String
 
