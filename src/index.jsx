@@ -3,7 +3,8 @@ import { func , string, bool} from 'prop-types';
 import * as PEG from 'pegjs';
 import grammar from './gramma.pegjs';
 import 'brace';
-import 'brace/theme/github';
+import 'brace/theme/tomorrow';
+
 //import ace from 'ace-builds';
 import SimpleQueryMode from './simpleQuery.mode';
 
@@ -40,7 +41,7 @@ class QueryBox extends React.PureComponent {
             highlightActiveLine: false,
             printMargin: false,
             showGutter: false,
-            theme: "ace/theme/github",
+            theme: "ace/theme/tomorrow",
             fontSize: 13,
         });
         this.editor().commands.addCommand({

@@ -6,7 +6,7 @@ import './App.scss';
 class App extends React.Component {
     state = {
         result: ``,
-        queryText: "(gender = 'women' & age >= 18) | (gender = 'men' & age >= 22)"
+        queryText: "(gender = 'women' & age >= 18 & title startwith 'ms.') | (gender = 'men' & age >= 22 & title contains 'mr')"
 
     }
    

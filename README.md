@@ -2,20 +2,28 @@
 A react-text-box component which will transform simple expression as free-text to object
 ![Example](/assets/simple-query-example.png)
 
-### Supported operators
+### Operators
 
-|Key|Meaning|
-|----|-------|
-|`=` | Equal|
-|`>` | Greater than|
-|`>=`| Greater than or equal|
-|`<` | Less than|
-|`<=`| Less than or equal|
-|`%=`| Like|
-|`@=`| Contains|
-|`$=`| StartWith|
-|`&` | And|
-|`|` | Or|
+|Operator   |Meaning                | Property Name  |
+|-----------|-----------------------| ---------------|
+|`=`        | Equal                 | $eq            |
+|`>`        | Greater than          | $gt            |
+|`>=`       | Greater than or equal | $gte           |
+|`<`        | Less than             | $lt            |
+|`<=`       | Less than or equal    | $lte           |
+|`%=`       | Like                  | $like          |
+|`@=`       | Contains              | $contains      |
+|`$=`       | StartWith             | $startWith     |
+|`&`        | And                   | $and           |
+|`|`        | Or                    | $or            |
+
+### Keywords
+|Keyword|Meaning        | Property Name  |
+|-----------|-----------|----------------|
+|like       |Like       | $like          |
+|startwith  |Start With | $startWith     |
+|contains   |Contains   | $contains      |
+
 
 ### NPM Install & use
 ``npm i joy-query-box``
