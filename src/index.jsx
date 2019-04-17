@@ -47,9 +47,8 @@ class QueryBox extends React.PureComponent {
         this.editor().commands.addCommand({
             name: 'submit-query',
             bindKey: {
-                sender:     "editor|cli",
-                mac:        "Enter",
-                windows:    "Enter"
+                mac:    "Enter",
+                win:    "Enter"
             },
             exec: editor => hanleQueryChange(editor.getSession().getValue())
         });
