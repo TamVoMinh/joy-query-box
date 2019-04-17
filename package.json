@@ -12,7 +12,7 @@
     "start": "node server",
     "watch": "webpack --watch",
     "build": "webpack --mode development",
-    "build:component": "webpack --config webpack.component.config.js --progress -p"
+    "build:component": "webpack --config webpack.component.config.js --progress -p --display-modules"
   },
   "devDependencies": {
     "@babel/cli": "^7.0.0",

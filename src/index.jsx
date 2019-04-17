@@ -4,7 +4,7 @@ import * as PEG from 'pegjs';
 import grammar from './gramma.pegjs';
 import 'brace';
 import 'brace/theme/github';
-import ace from 'ace-builds';
+//import ace from 'ace-builds';
 import SimpleQueryMode from './simpleQuery.mode';
 
 const pegparser = PEG.generate(grammar);
@@ -17,18 +17,23 @@ class QueryBox extends React.PureComponent {
         autoFocus: bool
     }
 
+    constructor(props) {
+        super(props);
+        this.aceEditor = React.createRef();
+      }
+
     render(){
-        const inputClassName = this.props.className || 'flex-fill border py-2';
+        const inputClassName = this.props.className || 'flex-fill bg-white border py-2';
         return (
             <div className={inputClassName}>
-                <div ref="aceEditor" id="query-text-box"></div>
+                <div ref={this.aceEditor} id="query-text-box"></div>
             </div>
         );
     }
 
     componentDidMount() {
         const hanleQueryChange = this.hanleQueryChange;
-        this.__editor =  ace.edit(this.refs.aceEditor);
+        this.__editor =  ace.edit(this.aceEditor.current);
         this.editor().setOptions({
             maxLines: 1,
             autoScrollEditorIntoView: true,

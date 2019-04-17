@@ -1,6 +1,5 @@
 
-import ace from 'ace-builds';
-export class SimpleQueryRules extends ace.acequire("ace/mode/text_highlight_rules").TextHighlightRules {
+export class SimpleQueryRules extends window.ace.acequire("ace/mode/text_highlight_rules").TextHighlightRules {
 	constructor() {
 		super();
 		var keywords = ("like|contains|startwith|equal|not|between|and|or");
@@ -56,7 +55,7 @@ export class SimpleQueryRules extends ace.acequire("ace/mode/text_highlight_rule
 	}
 }
 
-export default class SimpleQueryMode extends ace.acequire('ace/mode/text').Mode {
+export default class SimpleQueryMode extends window.ace.acequire('ace/mode/text').Mode {
 	constructor() {
 		super();
 		this.HighlightRules = SimpleQueryRules;

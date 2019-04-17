@@ -34,9 +34,35 @@ var config =  {
       commonjs2: 'react-dom',
       amd: 'react-dom',
     },
+    'ace-builds': {
+      root: 'ace-builds',
+      commonjs: 'ace-builds',
+      commonjs2: 'ace-builds',
+      amd: 'ace-builds',
+    },
+    'brace': {
+      root: 'brace',
+      commonjs: 'brace',
+      commonjs2: 'brace',
+      amd: 'brace',
+    },
+    'pegjs': {
+      root: 'pegjs',
+      commonjs: 'pegjs',
+      commonjs2: 'pegjs',
+      amd: 'pegjs',
+    }
   },
 
-  
+  stats: {
+    all: true,
+    modules: true,
+    maxModules: 0,
+    errors: true,
+    warnings: true,
+    moduleTrace: true,
+    errorDetails: true
+  },
   output: {
     path: path.join(__dirname, './lib'),
     filename: 'index.js',
