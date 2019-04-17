@@ -65,7 +65,6 @@ class App extends React.Component {
                             <div className="input-group-text">Simple query</div>
                             </div>
                             <QueryBox
-                                className="form-control pt-2"
                                 autoFocus
                                 placeholder="type condition here"
                                 onSearch={this.handleOnSeach}

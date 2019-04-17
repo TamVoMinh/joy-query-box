@@ -18,7 +18,7 @@ class QueryBox extends React.PureComponent {
     }
 
     render(){
-        const inputClassName = this.props.className || 'border rounded p-2';
+        const inputClassName = this.props.className || 'flex-fill border py-2';
         return (
             <div className={inputClassName}>
                 <div ref="aceEditor" id="query-text-box"></div>
