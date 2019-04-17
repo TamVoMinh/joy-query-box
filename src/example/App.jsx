@@ -1,12 +1,15 @@
-import React, { Fragment } from 'react';
+import React from 'react';
 import { hot } from 'react-hot-loader';
 import QueryBox from '../index';
 import './App.scss';
 
 class App extends React.Component {
     state = {
-        result: ``
+        result: ``,
+        queryText: "(gender = 'women' & age >= 18) | (gender = 'men' & age >= 22)"
+
     }
+   
     render() {
         return (
             <div className="col col-12 col-lg-12 d-flex flex-column h-100">
@@ -21,7 +24,7 @@ class App extends React.Component {
                     </div>
                     <div className="row">
                         <div className="col-sm">
-                            <code>=</code> equal
+                            <code>=</code> Equal
                         </div>
                         <div className="col-sm">
                             <code>></code> Greater than
@@ -56,13 +59,20 @@ class App extends React.Component {
                     </div>
                 </div>
                 <div className="panel flex-fill my-2">
-                    <QueryBox
-                        autoFocus
-                        label="Simple query"
-                        placeholder="type condition here"
-                        onSearch={this.handleOnSeach}
-                        queryText={"(gender = 'women' & age >= 18) | (gender = 'men' & age >= 22)"}
-                    />
+                    <div className="panel my-2">
+                        <div className="input-group">
+                            <div className="input-group-prepend">
+                            <div className="input-group-text">Simple query</div>
+                            </div>
+                            <QueryBox
+                                autoFocus
+                                placeholder="type condition here"
+                                onSearch={this.handleOnSeach}
+                                queryText={this.state.queryText}
+                            />
+                        </div>
+                        
+                    </div>
                     <div className="card">
                         <div className="card-body">
                             <pre className="text-monospace">
