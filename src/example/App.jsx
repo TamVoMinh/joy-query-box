@@ -6,22 +6,22 @@ import './App.scss';
 const words = [
     {
         word: 'company',
-        desc: 'Company Name'
+        desc: 'Field: company name'
     },
     {
         word: 'email',
-        desc: 'Customer Email'
+        desc: 'Field: Company Email'
     },
     {
-        word: 'fortnoxId',
-        desc: 'Customer Fortnox Account Id'
+        word: 'vat',
+        desc: 'Field: Company VAT number'
     }
 ];
 
 class App extends React.Component {
     state = {
         result: ``,
-        queryText: "(gender = 'women' & age >= 18 & title startwith 'ms.') | (gender = 'men' & age >= 22 & title contains 'mr')"
+        queryText: "(gender = 'women' & age >= 18 & company like 'apple') | (gender = 'men' & age >= 22 & title contains 'mr')"
 
     }
 
