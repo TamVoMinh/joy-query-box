@@ -4,7 +4,7 @@ A react-text-box component which will transform simple expression as free-text t
 
 ### Operators
 
-|Operator & keyword   |       Meaning         | Property Name  |
+|Operator & Keyword   |       Meaning         | Property Name  |
 |---------------------|-----------------------| ---------------|
 |`=`                  | Equal                 | $eq            |
 |`>`                  | Greater than          | $gt            |
@@ -48,7 +48,7 @@ const suggessionwords = [
 
 <QueryBox
     autoFocus
-    word={suggessionwords}
+    words={suggessionwords}
     onSearch={this.handleOnSeach}
     queryText={"defaultText = 'a text value'"}
 />
