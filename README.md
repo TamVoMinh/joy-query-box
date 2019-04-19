@@ -15,7 +15,7 @@ A react-text-box component which will transform simple expression as free-text t
 |``contains``         | Contains              | $contains      |
 |``startwith``        | StartWith             | $startWith     |
 |``&``                | And                   | $and           |
-|``|``                | Or                    | $or            |
+| ``\|``              | ``Or``                    | ``$or``            |
 
 ### Features
 * Syntax highlight
@@ -26,7 +26,7 @@ A react-text-box component which will transform simple expression as free-text t
 * Filter completions operator based on primary types: ``number, date, string`` (1.1.x)
 * Filter completions based on a variable name & it's options (1.1.x)
 * Support more operators  ``is, in, between`` (1.2.x)
-* Support complex expression  ``is, in, between`` (1.3.x)
+* Support complex expression (1.3.x)
 
 ### NPM Install & use
 ```shell
