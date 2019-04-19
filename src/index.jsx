@@ -1,5 +1,5 @@
 import React from 'react';
-import { func, string, bool, arrayOf, shape } from 'prop-types';
+import { func, string, arrayOf, shape } from 'prop-types';
 import * as PEG from 'pegjs';
 import grammar from './gramma.pegjs';
 import 'brace';
@@ -15,10 +15,8 @@ const pegparser = PEG.generate(grammar);
 class QueryBox extends React.PureComponent {
     static propTypes = {
         className: string,
-        placeholder: string,
         onSearch: func.isRequired,
         queryText: string,
-        autoFocus: bool,
         words: arrayOf(shape({
             word: string.isRequired,
             desc: string.isRequired
@@ -39,7 +37,7 @@ class QueryBox extends React.PureComponent {
     render() {
         const inputClassName = this.props.className || 'flex-fill bg-white border py-2';
         return (
-            <div className={inputClassName}>
+            <div className={inputClassName} >
                 <div ref={this.aceEditor} id="query-text-box"></div>
             </div>
         );
@@ -69,6 +67,7 @@ class QueryBox extends React.PureComponent {
             theme: "ace/theme/tomorrow",
             fontSize: 13
         });
+
         this.editor().commands.addCommand({
             name: 'submit-query',
             bindKey: {
@@ -77,9 +76,10 @@ class QueryBox extends React.PureComponent {
             },
             exec: editor => this.hanleQueryChange(editor.getSession().getValue())
         });
-        this.editor().getSession().setMode(new SimpleQueryMode());
-        this.props.queryText && this.editor().getSession().setValue(this.props.queryText);
 
+        this.editor().getSession().setMode(new SimpleQueryMode());
+
+        this.props.queryText && this.editor().getSession().setValue(this.props.queryText);
     }
 
     editor = () => this.__editor;

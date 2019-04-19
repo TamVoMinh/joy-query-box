@@ -6,16 +6,16 @@ A react-text-box component which will transform simple expression as free-text t
 
 |Operator & Keyword   |       Meaning         | Property Name  |
 |---------------------|-----------------------| ---------------|
-|`=`                  | Equal                 | $eq            |
-|`>`                  | Greater than          | $gt            |
-|`>=`                 | Greater than or equal | $gte           |
-|`<`                  | Less than             | $lt            |
-|`<=`                 | Less than or equal    | $lte           |
-|`like`               | Like                  | $like          |
-|`contains`           | Contains              | $contains      |
-|`startwith`          | StartWith             | $startWith     |
-|`&`                  | And                   | $and           |
-|`|`                  | Or                    | $or            |
+|``=``                | Equal                 | $eq            |
+|``>``                | Greater than          | $gt            |
+|``>=``               | Greater than or equal | $gte           |
+|``<``                | Less than             | $lt            |
+|``<=``               | Less than or equal    | $lte           |
+|``like``             | Like                  | $like          |
+|``contains``         | Contains              | $contains      |
+|``startwith``        | StartWith             | $startWith     |
+|``&``                | And                   | $and           |
+|``|``                | Or                    | $or            |
 
 ### Features
 * Syntax highlight
@@ -23,10 +23,15 @@ A react-text-box component which will transform simple expression as free-text t
 * Result as object.
 
 ### Next update
-* Smart auto-complete reply on primary types number, date, string (1.1.x)
-* Support more operators [ in, between, from, to ]  (1.2.x)
+* Filter completions operator based on primary types: ``number, date, string`` (1.1.x)
+* Filter completions based on a variable name & it's options (1.1.x)
+* Support more operators  ``is, in, between`` (1.2.x)
+* Support complex expression  ``is, in, between`` (1.3.x)
+
 ### NPM Install & use
-``npm i joy-query-box``
+```shell
+npm i joy-query-box
+```
 
 ```jsx
 import QueryBox from 'joy-query-box';
@@ -47,7 +52,6 @@ const suggessionwords = [
 ];
 
 <QueryBox
-    autoFocus
     words={suggessionwords}
     onSearch={this.handleOnSeach}
     queryText={"defaultText = 'a text value'"}
@@ -56,12 +60,16 @@ const suggessionwords = [
 ```
 
 ## Run demo
-1. ``git clone https://github.com/TamVoMinh/joy-query-box.git``
-1. ``cd joy-query-box & npm install``
-1. ``yarn start``
+```shell
+git clone https://github.com/TamVoMinh/joy-query-box.git
+cd joy-query-box & npm install
+yarn start
+```
 
 ## Build component
-* ``yarn build:component``
+```shell
+yarn build:component
+```
 
 ## Note
 joy-query-box use bootstrap as default style.

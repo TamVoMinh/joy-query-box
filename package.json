@@ -1,6 +1,6 @@
 {
   "name": "joy-query-box",
-  "version": "1.1.1",
+  "version": "1.1.2",
   "description": "",
   "main": "lib/index.js",
   "directories": {
@@ -37,6 +37,16 @@
     "name": "Tam Vo",
     "email": "Tam.VoMinh212@gmail.com"
   },
+  "keywords": [
+    "react-component",
+    "reactjs",
+    "filter",
+    "simple filter",
+    "query",
+    "simple query language",
+    "free-text to object",
+    "webpack"
+  ],
   "repository": {
     "type": "git",
     "url": "https://github.com/TamVoMinh/joy-query-box.git"
