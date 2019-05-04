@@ -2,16 +2,13 @@
 export class SimpleQueryRules extends window.ace.acequire("ace/mode/text_highlight_rules").TextHighlightRules {
 	constructor() {
 		super();
-		var keywords = ("like|contains|startwith|equal|not|between|and|or");
+		var operators = ("is|like|contains|startwith|equal|and|or");
     
         var builtinConstants = ("true|false");
-    
-        var dataTypes = ("int|numeric|decimal|date|bit|money");
-    
+        
         var keywordMapper = this.createKeywordMapper({
-            "keyword": keywords,
+            "keyword.operator": operators,
             "constant.language": builtinConstants,
-            "storage.type": dataTypes
         }, "identifier", true);
     
         this.$rules = {
@@ -23,23 +20,23 @@ export class SimpleQueryRules extends window.ace.acequire("ace/mode/text_highlig
                 start : "/\\*",
                 end : "\\*/"
             }, {
-                token : "string",           // " string
+                token : "string",
                 regex : '".*?"'
             }, {
-                token : "string",           // ' string
+                token : "string",
                 regex : "'.*?'"
             }, {
-                token : "string",           // ` string (apache drill)
+                token : "string",
                 regex : "`.*?`"
             }, {
-                token : "constant.numeric", // float
+                token : "constant.numeric",
                 regex : "[+-]?\\d+(?:(?:\\.\\d*)?(?:[eE][+-]?\\d+)?)?\\b"
             }, {
                 token : keywordMapper,
                 regex : "[a-zA-Z_$][a-zA-Z0-9_$]*\\b"
             }, {
                 token : "keyword.operator",
-                regex : "\\&|>|>=|<|<=|="
+                regex : "\\&|>|>=|<|<=|=|#"
             }, {
                 token : "paren.lparen",
                 regex : "[\\(]"

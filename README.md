@@ -4,18 +4,18 @@ A react-text-box component which will transform simple expression as free-text t
 
 ### Operators
 
-|Operator & Keyword   |       Meaning         | Property Name  |
-|---------------------|-----------------------| ---------------|
-|``=``                | Equal                 | $eq            |
-|``>``                | Greater than          | $gt            |
-|``>=``               | Greater than or equal | $gte           |
-|``<``                | Less than             | $lt            |
-|``<=``               | Less than or equal    | $lte           |
-|``like``             | Like                  | $like          |
-|``contains``         | Contains              | $contains      |
-|``startwith``        | StartWith             | $startWith     |
-|``&``                | And                   | $and           |
-| ``\|``              | ``Or``                    | ``$or``            |
+|   Operators       |       Meaning         | Property Name  |
+|-------------------|-----------------------| ---------------|
+|   =/equal         | Equal                 | $eq            |
+|   >               | Greater than          | $gt            |
+|   >=              | Greater than or equal | $gte           |
+|   <               | Less than             | $lt            |
+|   <=              | Less than or equal    | $lte           |
+|   like            | Like                  | $like          |
+|   contains        | Contains              | $contains      |
+|   startwith       | StartWith             | $startWith     |
+|   &               | And                   | $and           |
+|   &#124;          | Or                    | $or            |
 
 ### Features
 * Syntax highlight
@@ -23,9 +23,9 @@ A react-text-box component which will transform simple expression as free-text t
 * Result as object.
 
 ### Next update
+* Support more operators  ``is, in, between`` (1.1.x)
 * Filter completions operator based on primary types: ``number, date, string`` (1.1.x)
-* Filter completions based on a variable name & it's options (1.1.x)
-* Support more operators  ``is, in, between`` (1.2.x)
+* Filter completions based on a variable name & it's options (1.2.x)
 * Support complex expression (1.3.x)
 
 ### NPM Install & use

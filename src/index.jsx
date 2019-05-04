@@ -14,6 +14,7 @@ const baseSuggestion = [
 const pegparser = PEG.generate(grammar);
 class QueryBox extends React.PureComponent {
     static propTypes = {
+        id: string,
         className: string,
         onSearch: func.isRequired,
         queryText: string,
@@ -36,11 +37,17 @@ class QueryBox extends React.PureComponent {
 
     render() {
         const inputClassName = this.props.className || 'flex-fill bg-white border py-2';
+        console.log(this.editorId());
         return (
             <div className={inputClassName} >
-                <div ref={this.aceEditor} id="query-text-box"></div>
+                <div ref={this.aceEditor} id={this.editorId()}></div>
             </div>
         );
+    }
+
+    editorId = () =>{
+        if(!this.__editorId) this.__editorId = this.props.id || Date.now().toString(16);
+        return this.__editorId;
     }
 
     componentDidMount() {

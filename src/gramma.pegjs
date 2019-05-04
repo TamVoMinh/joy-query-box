@@ -1,5 +1,5 @@
-// Simple API Query Grammar
-// ==========================
+// Grammar: API Query Language (aql)
+// =================================
 
 {
 	function parseAnd(res, term){
@@ -43,16 +43,18 @@ OrOp			= "|" {return "$or" }
 LP				= "("
 RP				= ")"
     
-CompOperators 	= Equal / GreaterThanOrEqual / GreaterThan / LessThanOrEqual / LessThan / Contains / Like / StartWith
+CompOperators 	= Equal / GreaterThanOrEqual / GreaterThan / LessThanOrEqual / LessThan / Contains / Like / StartWith / Is
 Equal				= "="	        {return "$eq"}
 Diff				= "#"	        {return "$dif"}
 GreaterThan 		= ">"	        {return "$gt"} 
 GreaterThanOrEqual 	= ">="	        {return "$gte"} 
 LessThan 			= "<"	        {return "$lt"} 
 LessThanOrEqual 	= "<="	        {return "$lte"} 
-StartWith 		= "startwith"	{return "$startWith"} 
-Contains         = "contains"	{return "$contains"} 
-Like 			= "like"        {return "$like"} 
+StartWith 		    = "startwith"	{return "$startWith"} 
+Contains            = "contains"	{return "$contains"} 
+Like 			    = "like"        {return "$like"} 
+Is 			        = "is"          {return "$is"} 
+
 
 Expr = Float / Integer / Identifier / String
 
