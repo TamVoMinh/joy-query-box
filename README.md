@@ -21,6 +21,7 @@ A react-text-box component which will transform simple expression as free-text t
 * Syntax highlight
 * Auto-complete on typing
 * Result as object.
+* Speech to text (ex. `quantity greater than or equal 18`)
 
 ### Next update
 * Support more operators  ``is, in, between`` (1.1.x)

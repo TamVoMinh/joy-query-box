@@ -37,23 +37,37 @@ GroupExpr		= LP _ exprs:ConjExpr _ RP {return exprs}
 ConjExpr		= head:CompExpr tail:(_ LogicOperators _ CompExpr)* {return ParseConjExpr(head, tail)}
 CompExpr 		= left:Identifier _ op:CompOperators _ right:Expr { return {[left]: {[op]: right}} }
 
-LogicOperators 	= logicOp:(AndOp / OrOp) {return logicOp}
+LogicOperators 	= logicOp:(AndOp / And / OrOp / Or) {return logicOp}
 AndOp 			= "&" {return "$and"}
+And 			= "and" {return "$and"}
+
 OrOp			= "|" {return "$or" }
+Or			    = "or" {return "$or" }
+
 LP				= "("
 RP				= ")"
     
-CompOperators 	= Equal / GreaterThanOrEqual / GreaterThan / LessThanOrEqual / LessThan / Contains / Like / StartWith / Is
-Equal				= "="	        {return "$eq"}
-Diff				= "#"	        {return "$dif"}
-GreaterThan 		= ">"	        {return "$gt"} 
-GreaterThanOrEqual 	= ">="	        {return "$gte"} 
-LessThan 			= "<"	        {return "$lt"} 
-LessThanOrEqual 	= "<="	        {return "$lte"} 
-StartWith 		    = "startwith"	{return "$startWith"} 
-Contains            = "contains"	{return "$contains"} 
-Like 			    = "like"        {return "$like"} 
-Is 			        = "is"          {return "$is"} 
+CompOperators 	= EqualOp / GreaterThanOrEqualOp / GreaterThanOp / LessThanOrEqualOp / LessThanOp / Contains / Like / StartWith / Is /
+                Equal / GreaterThanOrEqual / GreaterThan / LessThanOrEqual / LessThan
+EqualOp				    = "="	                {return "$eq"}
+Equal				    = "equal"	            {return "$eq"}
+
+GreaterThanOp 		    = ">"	                {return "$gt"}
+GreaterThan		        = "greater than"	    {return "$gt"}
+
+GreaterThanOrEqualOp 	= ">="	                        {return "$gte"}
+GreaterThanOrEqual 	    = "greater than or equal"	    {return "$gte"}
+
+LessThanOp 			    = "<"	                {return "$lt"} 
+LessThan 			    = "less than"	        {return "$lt"} 
+
+LessThanOrEqualOp 	    = "<="	                {return "$lte"} 
+LessThanOrEqual 	    = "less than or equal"	{return "$lte"} 
+
+StartWith 		        = "startwith"	{return "$startWith"} 
+Contains                = "contains"	{return "$contains"} 
+Like 			        = "like"        {return "$like"} 
+Is 			            = "is"          {return "$is"} 
 
 
 Expr = Float / Integer / Identifier / String
