@@ -62,9 +62,10 @@ const suggessionwords = [
 
 ## Run demo
 ```shell
-git clone https://github.com/TamVoMinh/joy-query-box.git
-cd joy-query-box & npm install
-yarn start
+$ git clone https://github.com/TamVoMinh/joy-query-box.git
+$ cd joy-query-box 
+$ npm install
+$ yarn start
 ```
 
 ## Build component
