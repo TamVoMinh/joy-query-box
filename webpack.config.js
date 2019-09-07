@@ -1,9 +1,10 @@
 const webpack = require('webpack');
+const publicPath = '/static';
 module.exports = {
   mode:'development',
   entry: [
     './src/example/index.jsx',
-    `webpack-dev-server/client?http://${require('os').hostname().toLowerCase()}:3000'`,
+    'webpack-dev-server/client?http://localhost:3000',
     'webpack/hot/only-dev-server'
   ],
   module: {
@@ -31,8 +32,8 @@ module.exports = {
     extensions: ['*', '.js', '.jsx']
   },
   output: {
-    path: __dirname + '/dist',
-    publicPath: '/static',
+    path: __dirname + '/build',
+    publicPath,
     filename: 'bundle.js'
   },
   plugins: [
@@ -40,7 +41,13 @@ module.exports = {
   ],
   devServer: {
     host: '0.0.0.0',
-    contentBase: './dist',
-    hot:true
+    hot:true,
+    open: true, 
+    host: '0.0.0.0',
+    port: 3000,
+    public: 'localhost:3000',
+    contentBase: './src/example/public',
+    publicPath,
+    historyApiFallback: true
   }
 };

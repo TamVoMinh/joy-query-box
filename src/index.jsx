@@ -37,7 +37,6 @@ class QueryBox extends React.PureComponent {
 
     render() {
         const inputClassName = this.props.className || 'flex-fill bg-white border py-2';
-        console.log(this.editorId());
         return (
             <div className={inputClassName} >
                 <div ref={this.aceEditor} id={this.editorId()}></div>

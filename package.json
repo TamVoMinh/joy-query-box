@@ -1,6 +1,6 @@
 {
   "name": "joy-query-box",
-  "version": "1.1.4",
+  "version": "1.1.5",
   "description": "",
   "main": "lib/index.js",
   "directories": {
@@ -9,7 +9,7 @@
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node server",
+    "start": "npx webpack-dev-server --open",
     "watch": "webpack --watch",
     "build": "webpack --mode development",
     "build:component": "webpack --config webpack.component.config.js --progress -p --display-modules"
@@ -38,11 +38,13 @@
     "email": "Tam.VoMinh212@gmail.com"
   },
   "keywords": [
-    "react-component",
     "reactjs",
-    "filter",
-    "simple filter",
     "query",
+    "filter",
+    "react-component",
+    "api filter",
+    "api query",
+    "simple filter",
     "simple query language",
     "free-text to object",
     "webpack"
