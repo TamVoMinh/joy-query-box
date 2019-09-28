@@ -64,7 +64,7 @@ var config =  {
     errorDetails: true
   },
   output: {
-    path: path.join(__dirname, './build'),
+    path: path.join(__dirname, '.'),
     filename: 'index.js',
     library: 'joy-query-box',
     libraryTarget: 'commonjs2'
