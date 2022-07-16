@@ -57,7 +57,6 @@ var config =  {
   stats: {
     all: true,
     modules: true,
-    maxModules: 0,
     errors: true,
     warnings: true,
     moduleTrace: true,
