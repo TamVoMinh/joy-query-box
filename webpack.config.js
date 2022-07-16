@@ -40,14 +40,11 @@ module.exports = {
     new webpack.HotModuleReplacementPlugin()
   ],
   devServer: {
-    host: '0.0.0.0',
+    host: 'localhost',
     hot:true,
     open: true, 
-    host: '0.0.0.0',
     port: 3000,
-    public: 'localhost:3000',
-    contentBase: './src/example/public',
-    publicPath,
+    static: './src/example/public',
     historyApiFallback: true
   }
 };
