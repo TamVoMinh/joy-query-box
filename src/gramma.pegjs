@@ -3,7 +3,20 @@
 
 {
 	function parseAnd(res, term){
-    	return Object.assign(res, term);
+        const entities = Object.entries(term);
+        if(entities.length ===1){
+            const [exprKey, exprValue] = entities[0];
+            if(res.hasOwnProperty(exprKey) && exprKey != '$or'){
+                const originExpr = Object.assign({}, res[exprKey])
+                res[exprKey] = {'$and': Object.assign(originExpr, exprValue)}
+            }else{
+                Object.assign(res, term)
+            }
+        }
+        else{
+            Object.assign(res, term)
+        }
+    	return res;
     }
     
     function parseOr(res, term){
