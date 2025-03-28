@@ -2,60 +2,78 @@
 // =================================
 
 {
-	function parseAnd(res, term){
-        const entities = Object.entries(term);
-        if(entities.length ===1){
-            const [exprKey, exprValue] = entities[0];
-            if(res.hasOwnProperty(exprKey) && exprKey != '$or'){
-                const originExpr = Object.assign({}, res[exprKey])
-                res[exprKey] = {'$and': Object.assign(originExpr, exprValue)}
-            }else{
-                Object.assign(res, term)
-            }
-        }
-        else{
-            Object.assign(res, term)
-        }
-    	return res;
-    }
-    
-    function parseOr(res, term){
-    	return res.$or.push(term)
-    }
-    
-    function parselogicExpr (res, op ,term) {
-    	return op === '$and' ? parseAnd(res, term) : parseOr(res, term);
-    }
-    
-	function ParseConjExpr(head, tail){
-    	if(!tail.length) return head;
-        var result = tail.reduce(function(res, element, ix){
-        	var op = element[1];
-            var term = element[3];
-    
-        	if(ix === 0) parselogicExpr(res, op, head);
-            parselogicExpr(res, op, term);
-            return res;
-        },{$or:[]});
-        
-        if(!result.$or.length) delete result.$or;
-        
-        return result;
-    }
+	function parseAnd(res, term) {
+		if (!term) return res;
+		
+		// Convert both operands to arrays of conditions
+		const conditions = [];
+		if (Array.isArray(res)) {
+			conditions.push(...res);
+		} else {
+			conditions.push(res);
+		}
+		if (Array.isArray(term)) {
+			conditions.push(...term);
+		} else {
+			conditions.push(term);
+		}
+		
+		// Group conditions by field
+		const groupedConditions = conditions.reduce((acc, condition) => {
+			const [[field, value]] = Object.entries(condition);
+			if (!acc[field]) {
+				acc[field] = [];
+			}
+			acc[field].push(value);
+			return acc;
+		}, {});
+		
+		// Combine conditions for each field
+		const result = {};
+		Object.entries(groupedConditions).forEach(([field, values]) => {
+			if (values.length === 1) {
+				result[field] = values[0];
+			} else {
+				result[field] = { '$and': values };
+			}
+		});
+		
+		return result;
+	}
+	
+	function parseOr(left, right) {
+		return { '$or': [left, right] };
+	}
+	
+	function ParseConjExpr(head, tail) {
+		if (!tail || !tail.length) return head;
+		
+		return tail.reduce((result, element) => {
+			const [, op, , term] = element;
+			if (op === '$and') {
+				return parseAnd(result, term);
+			} else { // op === '$or'
+				return parseOr(result, term);
+			}
+		}, head);
+	}
 
-    function parseBetween(left, right) {
-        const [min, max] = right;
-        return {
-            "$gte": min,
-            "$lte": max
-        };
-    }
+	function parseBetween(field, [min, max]) {
+		return {
+			[field]: {
+				"$gte": min,
+				"$lte": max
+			}
+		};
+	}
 
-    function parseIn(values) {
-        return {
-            "$in": values
-        };
-    }
+	function parseIn(field, values) {
+		return {
+			[field]: {
+				"$in": values
+			}
+		};
+	}
 }
 
 SimpleQuery		= head:IrlExpr tail:(_ LogicOperators _ IrlExpr)* {return ParseConjExpr(head, tail)}
@@ -64,8 +82,8 @@ GroupExpr		= LP _ exprs:ConjExpr _ RP {return exprs}
 ConjExpr		= head:CompExpr tail:(_ LogicOperators _ CompExpr)* {return ParseConjExpr(head, tail)}
 CompExpr 		= BetweenExpr / InExpr / BasicCompExpr
 BasicCompExpr   = left:Identifier _ op:CompOperators _ right:Expr { return {[left]: {[op]: right}} }
-BetweenExpr     = left:Identifier _ "between" _ min:Number _ "and" _ max:Number { return {[left]: parseBetween(left, [min, max])} }
-InExpr          = left:Identifier _ "in" _ LP _ values:InList _ RP { return {[left]: parseIn(values)} }
+BetweenExpr     = left:Identifier _ "between" _ min:Number _ "and" _ max:Number { return parseBetween(left, [min, max]) }
+InExpr          = left:Identifier _ "in" _ LP _ values:InList _ RP { return parseIn(left, values) }
 InList          = head:Expr tail:(_ "," _ Expr)* { return [head].concat(tail.map(item => item[3])) }
 
 LogicOperators 	= logicOp:(AndOp / And / OrOp / Or) {return logicOp}
@@ -99,7 +117,7 @@ StartWith 		        = "startwith"	{return "$startWith"}
 Contains                = "contains"	{return "$contains"} 
 Like 			        = "like"        {return "$like"} 
 Is 			            = "is"          {return "$is"} 
-NotIs                 = "is not"             {return "$isNot"}
+NotIs                   = "is not"      {return "$isNot"}
 
 Expr = Boolean / Float / Integer / Identifier / String
 

@@ -58,14 +58,21 @@ const QueryBox = ({ id, className, onSearch, queryText, words }) => {
     );
 
     useEffect(() => {
+        if (!aceEditor.current) return;
+
         editorInstance.current = window.ace.edit(aceEditor.current);
         editorInstance.current.$blockScrolling = true;
+
+        const session = editorInstance.current.getSession();
+        session.setMode(new SimpleQueryMode());
+        session.setUseWrapMode(true);
 
         const langTools = window.ace.acequire('ace/ext/language_tools');
         langTools.addCompleter(customCompleter);
 
         editorInstance.current.setOptions({
             maxLines: 1,
+            minLines: 1,
             autoScrollEditorIntoView: true,
             enableBasicAutocompletion: true,
             enableLiveAutocompletion: true,
@@ -86,7 +93,10 @@ const QueryBox = ({ id, className, onSearch, queryText, words }) => {
             exec: editor => handleQueryChange(editor.getSession().getValue())
         });
 
-        editorInstance.current.getSession().setMode(new SimpleQueryMode());
+        if (queryText) {
+            session.setValue(queryText);
+            handleQueryChange(queryText);
+        }
 
         return () => {
             if (editorInstance.current) {
@@ -94,17 +104,19 @@ const QueryBox = ({ id, className, onSearch, queryText, words }) => {
                 editorInstance.current = null;
             }
         };
-    }, [customCompleter, handleQueryChange]);
+    }, [customCompleter, handleQueryChange, queryText]);
 
     useEffect(() => {
         if (editorInstance.current && queryText !== previousQueryText.current) {
-            const currentValue = editorInstance.current.getSession().getValue();
+            const session = editorInstance.current.getSession();
+            const currentValue = session.getValue();
             if (queryText !== currentValue) {
-                editorInstance.current.getSession().setValue(queryText);
+                session.setValue(queryText || '');
+                handleQueryChange(queryText || '');
                 previousQueryText.current = queryText;
             }
         }
-    }, [queryText]);
+    }, [queryText, handleQueryChange]);
 
     return (
         <div 

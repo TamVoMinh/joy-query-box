@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useCallback } from 'react';
 import { hot } from 'react-hot-loader';
 import QueryBox from '../index';
 import './App.css';
@@ -64,11 +64,15 @@ const App = () => {
     const [result, setResult] = useState('');
     const [currentQuery, setCurrentQuery] = useState(examples[0].query);
 
-    const handleSearch = (err, parsed, freeText) => {
+    const handleSearch = useCallback((err, parsed, freeText) => {
         console.log({ err, parsed, freeText });
         setResult(JSON.stringify(err || parsed || undefined, null, 2));
         setCurrentQuery(freeText);
-    };
+    }, []);
+
+    const handleTryExample = useCallback((query) => {
+        setCurrentQuery(query);
+    }, []);
 
     return (
         <div className="col col-12 col-lg-12 d-flex flex-column h-100">
@@ -132,7 +136,7 @@ const App = () => {
                                     </p>
                                     <button 
                                         className="btn btn-sm btn-outline-primary"
-                                        onClick={() => setCurrentQuery(example.query)}
+                                        onClick={() => handleTryExample(example.query)}
                                     >
                                         Try This
                                     </button>
