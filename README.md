@@ -1,77 +1,136 @@
-## joy-query-box
-A react-text-box component which will transform simple expression as free-text to object
-![Example](/assets/simple-query-example.png)
+# Joy Query Box
 
-### Operators
+A React component for building and parsing SQL-like queries with natural language support. This component provides an intuitive interface for constructing complex queries with auto-completion and syntax highlighting.
 
-|   Operators       |       Meaning         | Property Name  |
-|-------------------|-----------------------| ---------------|
-|   =/equal         | Equal                 | $eq            |
-|   >               | Greater than          | $gt            |
-|   >=              | Greater than or equal | $gte           |
-|   <               | Less than             | $lt            |
-|   <=              | Less than or equal    | $lte           |
-|   like            | Like                  | $like          |
-|   contains        | Contains              | $contains      |
-|   startwith       | StartWith             | $startWith     |
-|   &               | And                   | $and           |
-|   &#124;          | Or                    | $or            |
+## Features
 
-### Features
-* Syntax highlight
-* Auto-complete on typing
-* Result as object.
-* Speech to text (ex. `quantity greater than or equal 18`)
+- 🎯 SQL-like query syntax
+- 🔍 Auto-completion for field names
+- 💡 Syntax highlighting
+- 🎨 Customizable field suggestions
+- 📝 Natural language support
+- 🔄 Real-time query parsing
 
-### Next update
-* Support more operators  ``is, in, between`` (1.1.x)
-* Filter completions operator based on primary types: ``number, date, string`` (1.1.x)
-* Filter completions based on a variable name & it's options (1.2.x)
-* Support complex expression (1.3.x)
+## Installation
 
-### NPM Install & use
-```shell
-npm i joy-query-box
+```bash
+npm install joy-query-box
+# or
+yarn add joy-query-box
 ```
+
+## Usage
 
 ```jsx
-import QueryBox from 'joy-query-box';
-...
-const suggessionwords = [
-    {
-        word: 'company',
-        desc: 'Field: company name'
-    },
-    {
-        word: 'email',
-        desc: 'Field: Company Email'
-    },
-    {
-        word: 'vat',
-        desc: 'Field: Company VAT number'
-    }
+import { QueryBox } from 'joy-query-box';
+
+const words = [
+    { word: 'company', desc: 'Company name', type: 'string' },
+    { word: 'age', desc: 'Employee age', type: 'number' },
+    { word: 'status', desc: 'Account status', type: 'string', options: ['active', 'pending', 'inactive'] },
+    { word: 'isVerified', desc: 'Verification status', type: 'boolean' }
 ];
 
-<QueryBox
-    words={suggessionwords}
-    onSearch={this.handleOnSeach}
-    queryText={"defaultText = 'a text value'"}
-/>
+const MyComponent = () => {
+    const handleSearch = (error, parsed, query) => {
+        if (error) {
+            console.error('Query error:', error);
+        } else {
+            console.log('Parsed query:', parsed);
+        }
+    };
 
+    return (
+        <QueryBox
+            words={words}
+            onSearch={handleSearch}
+        />
+    );
+};
 ```
 
-## Run demo
-```shell
-$ git clone https://github.com/TamVoMinh/joy-query-box.git
-$ cd joy-query-box 
-$ npm install
-$ yarn start
+## Supported Operators
+
+### Comparison Operators
+- `=` Equal
+- `>` Greater than
+- `>=` Greater than or equal
+- `<` Less than
+- `<=` Less than or equal
+
+### Text Operators
+- `like` Pattern match (use % as wildcard)
+- `contains` Contains text
+- `startwith` Starts with
+
+### Special Operators
+- `is` Boolean check (e.g., `isVerified is true`)
+- `in` Value in set (e.g., `status in ('active', 'pending')`)
+- `between` Range check (e.g., `age between 25 and 35`)
+
+### Logical Operators
+- `&` AND
+- `|` OR
+- `()` Grouping
+
+## Query Examples
+
+```sql
+-- Simple comparison
+age >= 25 & salary <= 100000
+
+-- Text search with wildcards
+company like 'Tech%' & email contains '@company.com'
+
+-- Boolean and set operations
+isVerified is true & status in ('active', 'pending')
+
+-- Range check
+age between 25 and 35
+
+-- Complex conditions
+(department = 'Engineering' & salary > 80000) | (department = 'Sales' & salary > 60000)
+
+-- Mixed operators
+(company like '%Tech%' | department = 'IT') & age > 21 & isVerified is true
 ```
 
-## Build component
-```shell
-yarn build:component
+## Props
+
+| Prop | Type | Description |
+|------|------|-------------|
+| `words` | `Array<QuerySuggestion>` | Array of field suggestions for auto-completion |
+| `onSearch` | `(error: Error \| null, parsed: QueryExpression \| null, query: string) => void` | Callback function when query changes |
+| `className` | `string` | Optional CSS class name |
+| `id` | `string` | Optional element ID |
+
+### QuerySuggestion Type
+
+```typescript
+interface QuerySuggestion {
+    word: string;           // Field name
+    desc: string;          // Field description
+    type: 'string' | 'number' | 'boolean' | 'date';  // Field type
+    options?: string[];    // Optional array of valid values for the field
+}
 ```
 
-## Note
-joy-query-box use bootstrap as default style.
+## Development
+
+```bash
+# Install dependencies
+npm install
+
+# Start development server
+npm start
+
+# Build for production
+npm run build
+
+# Run tests
+npm test
+```
+
+## License
+
+MIT
