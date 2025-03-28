@@ -1,16 +1,17 @@
 const webpack = require('webpack');
-const publicPath = '/static';
+const path = require('path');
+
 module.exports = {
-  mode:'development',
+  mode: 'development',
   entry: [
-    './src/example/index.jsx',
+    './src/example/index.tsx',
     'webpack-dev-server/client?http://localhost:3000',
     'webpack/hot/only-dev-server'
   ],
   module: {
     rules: [
       {
-        test: /\.(js|jsx)$/,
+        test: /\.(ts|tsx)$/,
         exclude: /node_modules/,
         use: ['babel-loader']
       },
@@ -19,21 +20,27 @@ module.exports = {
         use: 'raw-loader',
       },
       {
-        test: /\.scss$/,
-        use: [
-            "style-loader", 
-            "css-loader", 
-            "sass-loader"
-        ]
+        test: /\.css$/,
+        use: ['style-loader', 'css-loader']
+      },
+      {
+        test: /\.js$/,
+        include: [
+          path.resolve(__dirname, 'node_modules/ace-builds')
+        ],
+        use: ['babel-loader']
       }
     ]
   },
   resolve: {
-    extensions: ['*', '.js', '.jsx']
+    extensions: ['*', '.js', '.jsx', '.ts', '.tsx'],
+    alias: {
+      'ace-builds': path.resolve(__dirname, 'node_modules/ace-builds')
+    }
   },
   output: {
-    path: __dirname + '/build',
-    publicPath,
+    path: path.resolve(__dirname, 'dist'),
+    publicPath: '/static/',
     filename: 'bundle.js'
   },
   plugins: [
@@ -41,7 +48,7 @@ module.exports = {
   ],
   devServer: {
     host: 'localhost',
-    hot:true,
+    hot: true,
     open: true, 
     port: 3000,
     static: './src/example/public',

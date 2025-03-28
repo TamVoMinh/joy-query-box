@@ -1,7 +1,10 @@
 # See https://help.github.com/ignore-files/ for more about ignoring files.
 
 # dependencies
-/node_modules
+node_modules/
+/.pnp
+.pnp.js
+
 # testing
 /coverage
 
@@ -28,3 +31,27 @@ yarn-error.log*
 /.vscode/
 /.idea/
 package-lock.json
+
+# Build outputs
+/dist
+/lib
+*.tgz
+
+# Testing
+.nyc_output
+
+# Logs
+logs
+*.log
+
+# Editor directories and files
+*.swp
+*.swo
+
+# TypeScript
+*.tsbuildinfo
+.tscache/
+
+# Misc
+.cache/
+Thumbs.db

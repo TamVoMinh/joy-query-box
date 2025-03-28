@@ -1,12 +1,62 @@
-<!doctype html>
-<html>
-  <head>
-    <title>joy-query-box example</title>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-  </head>
-  <body>
-    <div id='root' class="container h-100">
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Joy Query Box Example</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <style>
+        body {
+            min-height: 100vh;
+            padding: 20px;
+        }
+        .panel {
+            margin-bottom: 2rem;
+        }
+        .card {
+            height: 100%;
+            margin-bottom: 1rem;
+        }
+        .card-body {
+            display: flex;
+            flex-direction: column;
+        }
+        .card-text {
+            flex-grow: 1;
+            margin-bottom: 1rem;
+        }
+        code {
+            background-color: #f8f9fa;
+            padding: 2px 6px;
+            border-radius: 4px;
+            color: #e83e8c;
+        }
+        .input-group {
+            margin-bottom: 1rem;
+        }
+        .input-group-text {
+            background-color: #f8f9fa;
+        }
+        .list-unstyled li {
+            margin-bottom: 0.5rem;
+        }
+        pre.text-monospace {
+            background-color: #f8f9fa;
+            padding: 1rem;
+            border-radius: 4px;
+        }
+        .flex-fill {
+            flex: 1;
+        }
+        .query-box {
+            min-height: 38px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div id="root"></div>
     </div>
     <script src="/static/bundle.js"></script>
-  </body>
+</body>
 </html>

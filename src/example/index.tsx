@@ -1,78 +1,62 @@
-import React, { useState, useCallback } from 'react';
-import { hot } from 'react-hot-loader';
-import QueryBox from '../index';
-import './App.css';
+import React, { useState } from 'react';
+import { createRoot } from 'react-dom/client';
+import { QueryBox, QueryExpression, QuerySuggestion } from '../components/QueryBox';
 
-const words = [
+const exampleQueries = [
     {
-        word: 'company',
-        desc: 'Field: company name',
-        type: 'string'
+        title: 'Comparison Operators',
+        query: "age >= 25 & salary <= 100000"
     },
     {
-        word: 'email',
-        desc: 'Field: Company Email',
-        type: 'string'
+        title: 'Text Search',
+        query: "company like 'Tech%' & email contains '@company.com' & department startwith 'Dev'"
     },
     {
-        word: 'age',
-        desc: 'Field: Person age',
-        type: 'number'
+        title: 'Boolean and Sets',
+        query: "isVerified is true & status in ('active', 'pending')"
     },
     {
-        word: 'status',
-        desc: 'Field: Account status',
-        type: 'string',
-        options: ['active', 'inactive', 'pending']
-    },
-    {
-        word: 'isVerified',
-        desc: 'Field: Verification status',
-        type: 'boolean'
-    },
-    {
-        word: 'registrationDate',
-        desc: 'Field: Registration date',
-        type: 'date'
-    }
-];
-
-const examples = [
-    {
-        title: 'Simple Comparison',
-        query: "company = 'Apple Inc'"
-    },
-    {
-        title: 'Numeric Range',
+        title: 'Range Check',
         query: "age between 25 and 35"
     },
     {
-        title: 'Multiple Conditions',
-        query: "(status in ('active', 'pending')) & age > 21"
+        title: 'Logical Operators',
+        query: "(department = 'Engineering' & salary > 80000) | (department = 'Sales' & salary > 60000)"
     },
     {
-        title: 'Boolean Check',
-        query: "isVerified is true"
-    },
-    {
-        title: 'Complex Query',
-        query: "(company like 'Tech%' & age >= 25) | (status = 'active' & isVerified is true)"
+        title: 'Mixed Conditions',
+        query: "(company like '%Tech%' | department = 'IT') & age > 21 & isVerified is true"
     }
 ];
 
+const words: QuerySuggestion[] = [
+    { word: 'company', desc: 'Company name', type: 'string' },
+    { word: 'age', desc: 'Employee age', type: 'number' },
+    { word: 'status', desc: 'Account status', type: 'string', options: ['active', 'pending', 'inactive'] },
+    { word: 'isVerified', desc: 'Verification status', type: 'boolean' },
+    { word: 'email', desc: 'Email address', type: 'string' },
+    { word: 'department', desc: 'Department name', type: 'string' },
+    { word: 'salary', desc: 'Annual salary', type: 'number' }
+] as const;
+
 const App = () => {
-    const [result, setResult] = useState('');
-    const [currentQuery, setCurrentQuery] = useState(examples[0].query);
+    const [result, setResult] = useState<{
+        error: Error | null;
+        parsed: QueryExpression | null;
+        query: string;
+    }>({ error: null, parsed: null, query: '' });
 
-    const handleSearch = useCallback((err, parsed, freeText) => {
-        console.log({ err, parsed, freeText });
-        setResult(JSON.stringify(err || parsed || undefined, null, 2));
-        setCurrentQuery(freeText);
-    }, []);
+    const handleSearch = (error: Error | null, parsed: QueryExpression | null, query: string) => {
+        setResult({ error, parsed, query });
+    };
 
-    const handleTryExample = useCallback((query) => {
-        setCurrentQuery(query);
-    }, []);
+    const handleExampleClick = (query: string) => {
+        const queryBoxElement = document.querySelector('.ace_text-input') as HTMLTextAreaElement;
+        if (queryBoxElement) {
+            queryBoxElement.value = query;
+            queryBoxElement.dispatchEvent(new Event('input', { bubbles: true }));
+        }
+    };
 
     return (
         <div className="col col-12 col-lg-12 d-flex flex-column h-100">
@@ -107,7 +91,6 @@ const App = () => {
                         <h6>Special</h6>
                         <ul className="list-unstyled">
                             <li><code>is</code> Boolean check</li>
-                            <li><code>is not</code> Negative boolean</li>
                             <li><code>in</code> Value in set</li>
                             <li><code>between</code> Range check</li>
                         </ul>
@@ -126,7 +109,7 @@ const App = () => {
             <div className="container mb-4">
                 <h5>Example Queries</h5>
                 <div className="row">
-                    {examples.map((example, index) => (
+                    {exampleQueries.map((example, index) => (
                         <div key={index} className="col-md-6 mb-2">
                             <div className="card h-100">
                                 <div className="card-body">
@@ -136,7 +119,7 @@ const App = () => {
                                     </p>
                                     <button 
                                         className="btn btn-sm btn-outline-primary"
-                                        onClick={() => handleTryExample(example.query)}
+                                        onClick={() => handleExampleClick(example.query)}
                                     >
                                         Try This
                                     </button>
@@ -156,7 +139,6 @@ const App = () => {
                         <QueryBox
                             words={words}
                             onSearch={handleSearch}
-                            queryText={currentQuery}
                         />
                     </div>
                 </div>
@@ -167,7 +149,11 @@ const App = () => {
                     </div>
                     <div className="card-body">
                         <pre className="text-monospace mb-0">
-                            {result}
+                            {result.error ? (
+                                `Error: ${result.error.message}`
+                            ) : (
+                                JSON.stringify(result.parsed, null, 2)
+                            )}
                         </pre>
                     </div>
                 </div>
@@ -176,4 +162,8 @@ const App = () => {
     );
 };
 
-export default hot(module)(App);
+const container = document.getElementById('root');
+if (container) {
+    const root = createRoot(container);
+    root.render(<App />);
+} 

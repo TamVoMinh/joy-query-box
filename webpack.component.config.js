@@ -1,14 +1,13 @@
-var path = require('path');
-var webpack = require('webpack');
-var _ = require("lodash");
+const path = require('path');
+const webpack = require('webpack');
 
-var config =  {
+module.exports = {
   devtool: 'source-map',
-  entry: './src/index.jsx',
+  entry: './src/components/QueryBox/index.ts',
   module: {
     rules: [
       {
-        test: /\.(js|jsx)$/,
+        test: /\.(ts|tsx)$/,
         exclude: /node_modules/,
         use: ['babel-loader']
       },
@@ -16,12 +15,16 @@ var config =  {
         test: /\.pegjs$/i,
         use: 'raw-loader',
       },
+      {
+        test: /\.css$/,
+        use: ['style-loader', 'css-loader']
+      }
     ]
   },
   resolve: {
-    extensions: ['*', '.js', '.jsx']
+    extensions: ['*', '.js', '.jsx', '.ts', '.tsx']
   },
-   externals: {
+  externals: {
     react: {
       root: 'React',
       commonjs: 'react',
@@ -53,21 +56,17 @@ var config =  {
       amd: 'pegjs',
     }
   },
-
-  stats: {
-    all: true,
-    modules: true,
-    errors: true,
-    warnings: true,
-    moduleTrace: true,
-    errorDetails: true
-  },
   output: {
-    path: path.join(__dirname, '.'),
+    path: path.resolve(__dirname, 'dist'),
     filename: 'index.js',
-    library: 'joy-query-box',
-    libraryTarget: 'commonjs2'
+    library: {
+      name: 'joy-query-box',
+      type: 'umd',
+      umdNamedDefine: true
+    },
+    globalObject: 'this'
   },
-}
-
-module.exports = config;
+  optimization: {
+    minimize: true
+  }
+};
