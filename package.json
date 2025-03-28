@@ -1,6 +1,6 @@
 {
   "name": "joy-query-box",
-  "version": "1.1.7",
+  "version": "1.1.8",
   "description": "A React component for building and parsing SQL-like queries",
   "main": "dist/index.js",
   "types": "dist/types/index.d.ts",
