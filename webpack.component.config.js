@@ -16,6 +16,10 @@ var config =  {
         test: /\.pegjs$/i,
         use: 'raw-loader',
       },
+      {
+        test: /\.css$/,
+        use: ['style-loader', 'css-loader']
+      }
     ]
   },
   resolve: {
@@ -54,6 +58,9 @@ var config =  {
     }
   },
 
+  optimization: {
+    minimize: true
+  },
   stats: {
     all: true,
     modules: true,

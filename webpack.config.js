@@ -19,12 +19,8 @@ module.exports = {
         use: 'raw-loader',
       },
       {
-        test: /\.scss$/,
-        use: [
-            "style-loader", 
-            "css-loader", 
-            "sass-loader"
-        ]
+        test: /\.css$/,
+        use: ['style-loader', 'css-loader']
       }
     ]
   },
@@ -41,7 +37,7 @@ module.exports = {
   ],
   devServer: {
     host: 'localhost',
-    hot:true,
+    hot: true,
     open: true, 
     port: 3000,
     static: './src/example/public',

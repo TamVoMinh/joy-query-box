@@ -1,5 +1,5 @@
-import React from 'react';
-import { func, string, arrayOf, shape } from 'prop-types';
+import React, { useRef, useEffect, useMemo, useCallback } from 'react';
+import PropTypes from 'prop-types';
 import * as PEG from 'pegjs';
 import grammar from './gramma.pegjs';
 import 'brace';
@@ -7,64 +7,67 @@ import 'brace/theme/tomorrow';
 import "brace/snippets/text";
 import 'brace/ext/language_tools';
 import SimpleQueryMode from './simpleQuery.mode';
+import debounce from 'lodash/debounce';
 
 const baseSuggestion = [
 ];
 
 const pegparser = PEG.generate(grammar);
-class QueryBox extends React.PureComponent {
-    static propTypes = {
-        id: string,
-        className: string,
-        onSearch: func.isRequired,
-        queryText: string,
-        words: arrayOf(shape({
-            word: string.isRequired,
-            desc: string.isRequired
-        }))
-    }
 
-    constructor(props) {
-        super(props);
-        this.aceEditor = React.createRef();
-    }
+const QueryBox = ({ id, className, onSearch, queryText, words }) => {
+    const aceEditor = useRef(null);
+    const editorInstance = useRef(null);
+    const previousQueryText = useRef(queryText);
+    const editorId = useMemo(() => id || Date.now().toString(16), [id]);
 
-    customCompleter = {
-        getCompletions: (editor, session, pos, prefix, callback) =>{
-            callback(null, this.suggesions);
-        }
-    }
-
-    render() {
-        const inputClassName = this.props.className || 'flex-fill bg-white border py-2';
-        return (
-            <div className={inputClassName} >
-                <div ref={this.aceEditor} id={this.editorId()}></div>
-            </div>
-        );
-    }
-
-    editorId = () =>{
-        if(!this.__editorId) this.__editorId = this.props.id || Date.now().toString(16);
-        return this.__editorId;
-    }
-
-    componentDidMount() {
-        this.__editor = window.ace.edit(this.aceEditor.current);
-        this.__editor.$blockScrolling = true;
-        let langTools = window.ace.acequire('ace/ext/language_tools');
-        langTools.addCompleter(this.customCompleter);
-
-        this.suggesions = baseSuggestion.concat((this.props.words || []).map(({ word, desc }) => ({
+    const suggestions = useMemo(() => 
+        baseSuggestion.concat((words || []).map(({ word, desc }) => ({
             caption: word,
             value: word,
             meta: desc
-        })));
+        }))),
+        [words]
+    );
 
-        this.editor().setOptions({
+    const customCompleter = useMemo(() => ({
+        getCompletions: (editor, session, pos, prefix, callback) => {
+            callback(null, suggestions);
+        }
+    }), [suggestions]);
+
+    const handleQueryChange = useCallback(
+        debounce((val) => {
+            let err = null;
+            let parsed = null;
+            let freetext = '';
+            try {
+                freetext = val.trim();
+                if (!freetext) {
+                    onSearch(null, {}, '');
+                    return;
+                }
+                parsed = pegparser.parse(freetext);
+            } catch (e) {
+                err = e;
+                console.error('Query parsing error:', e);
+            } finally {
+                onSearch(err, parsed, freetext);
+            }
+        }, 300),
+        [onSearch]
+    );
+
+    useEffect(() => {
+        editorInstance.current = window.ace.edit(aceEditor.current);
+        editorInstance.current.$blockScrolling = true;
+
+        const langTools = window.ace.acequire('ace/ext/language_tools');
+        langTools.addCompleter(customCompleter);
+
+        editorInstance.current.setOptions({
             maxLines: 1,
             autoScrollEditorIntoView: true,
-            enableBasicAutocompletion: this.customCompleter,
+            enableBasicAutocompletion: true,
             enableLiveAutocompletion: true,
             enableSnippets: true,
             highlightActiveLine: false,
@@ -74,36 +77,61 @@ class QueryBox extends React.PureComponent {
             fontSize: 13
         });
 
-        this.editor().commands.addCommand({
+        editorInstance.current.commands.addCommand({
             name: 'submit-query',
             bindKey: {
                 mac: "Enter",
                 win: "Enter"
             },
-            exec: editor => this.hanleQueryChange(editor.getSession().getValue())
+            exec: editor => handleQueryChange(editor.getSession().getValue())
         });
 
-        this.editor().getSession().setMode(new SimpleQueryMode());
+        editorInstance.current.getSession().setMode(new SimpleQueryMode());
 
-        this.props.queryText && this.editor().getSession().setValue(this.props.queryText);
-    }
+        return () => {
+            if (editorInstance.current) {
+                editorInstance.current.destroy();
+                editorInstance.current = null;
+            }
+        };
+    }, [customCompleter, handleQueryChange]);
 
-    editor = () => this.__editor;
-
-    hanleQueryChange = val => {
-        let err = null;
-        let parsed = null;
-        let freetext = '';
-        try {
-            freetext = val.trim();
-            parsed = freetext ? pegparser.parse(freetext) : {};
+    useEffect(() => {
+        if (editorInstance.current && queryText !== previousQueryText.current) {
+            const currentValue = editorInstance.current.getSession().getValue();
+            if (queryText !== currentValue) {
+                editorInstance.current.getSession().setValue(queryText);
+                previousQueryText.current = queryText;
+            }
         }
-        catch (e) {
-            err = e;
-        } finally {
-            this.props.onSearch(err, parsed, freetext);
-        }
-    }
-}
+    }, [queryText]);
+
+    return (
+        <div 
+            className={className || 'flex-fill bg-white border py-2'}
+            role="search"
+            aria-label="Query input"
+        >
+            <div 
+                ref={aceEditor}
+                id={editorId}
+                tabIndex="0"
+            />
+        </div>
+    );
+};
+
+QueryBox.propTypes = {
+    id: PropTypes.string,
+    className: PropTypes.string,
+    onSearch: PropTypes.func.isRequired,
+    queryText: PropTypes.string,
+    words: PropTypes.arrayOf(
+        PropTypes.shape({
+            word: PropTypes.string.isRequired,
+            desc: PropTypes.string.isRequired
+        })
+    )
+};
 
 export default QueryBox;
